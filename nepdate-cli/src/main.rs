@@ -1,8 +1,7 @@
+use bikram::bikram::Bikram;
+use chrono::{Datelike, Local};
 use std::env;
 use std::process;
-use chrono::{Datelike, Local};
-mod bikram;
-use bikram::Bikram;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -59,7 +58,8 @@ fn main() {
     let bs_weekday_name = bsdate.get_weekday_name(converted_year, converted_month, converted_day);
 
     if conv_type == "--tobs" {
-        let _gregorian_weekday_name = bsdate.get_weekday_name(converted_year, converted_month, converted_day);
+        let _gregorian_weekday_name =
+            bsdate.get_weekday_name(converted_year, converted_month, converted_day);
 
         println!(
             " \x1b[33m Bikram Sambat Date: \x1b[0m \x1b[35m{} {} {} {} \x1b[0m \x1b[33m days in bikram month: \x1b[0m{} \x1b[0m",
@@ -70,7 +70,8 @@ fn main() {
             bsdate.days_in_month(bsdate.get_year(), bsdate.get_month())
         );
     } else if conv_type == "--toad" {
-        let gregorian_weekday_name = bsdate.get_weekday_name(converted_year, converted_month, converted_day);
+        let gregorian_weekday_name =
+            bsdate.get_weekday_name(converted_year, converted_month, converted_day);
 
         println!(
             "\x1b[33m Gregorian Date: \x1b[0m \x1b[35m{} {} {} {} \x1b[0m",
