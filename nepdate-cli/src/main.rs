@@ -1,9 +1,30 @@
 use bikram::bikram::Bikram;
 use chrono::{Datelike, Local};
+use clap::Parser;
 use std::env;
 use std::process;
 
-fn main() {
+/// Convert to Nepali Date
+#[derive(Parser, Debug)]
+#[command(version, about, long_about = None)]
+struct Conv {
+    /// Convert date to Bikram Sambat, commonly referred to as BS (year month day)
+    #[arg(short, long)]
+    ad_to_bs: Option<String>,
+
+    /// Convert Gregorian Date, commonly referred to as AD (year month day)
+    #[arg(short, long)]
+    bs_to_ad: Option<String>,
+
+    /// Show the current Nepali date (BS)
+    #[arg(short, long)]
+    today_nepali: bool,
+    ///// Show the current English date (AD)
+    //#[arg(short, long)]
+    //today_english: bool,
+}
+
+fn _prev_main() {
     let args: Vec<String> = env::args().collect();
 
     if args.len() != 6 || args[1] != "--conv" || (args[2] != "--tobs" && args[2] != "--toad") {
@@ -76,6 +97,38 @@ fn main() {
         println!(
             "\x1b[33m Gregorian Date: \x1b[0m \x1b[35m{} {} {} {} \x1b[0m",
             converted_year, converted_month, converted_day, gregorian_weekday_name
+        );
+    }
+}
+
+mod nepali_calendar {
+    pub fn human_month(m: i32) -> &'static str {
+        match m {
+            1 => "Baisakh",
+            2 => "Jestha",
+            3 => "Ashad",
+            _ => "Unknown",
+        }
+    }
+}
+
+fn main() {
+    let conv = Conv::parse();
+
+    if conv.today_nepali {
+        let now_date = Local::now();
+        let year = now_date.year();
+        let month = now_date.month();
+        let day = now_date.day();
+
+        let mut bsdate = Bikram::new();
+        bsdate.from_gregorian(year, month as i32, day as i32);
+
+        println!(
+            "{} {}, {}",
+            bsdate.get_day(),
+            nepali_calendar::human_month(bsdate.get_month()),
+            bsdate.get_year(),
         );
     }
 }
