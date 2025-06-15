@@ -1,11 +1,14 @@
 use bikram::bikram::Bikram;
 use chrono::{Datelike, Local};
 use clap::Parser;
+use clap::Subcommand;
 use std::env;
 use std::process;
 
+mod nepali_calendar;
+
 /// Convert to Nepali Date
-#[derive(Parser, Debug)]
+#[derive(Parser)]
 #[command(version, about, long_about = None)]
 struct Conv {
     /// Convert date to Bikram Sambat, commonly referred to as BS (year month day)
@@ -17,11 +20,35 @@ struct Conv {
     bs_to_ad: Option<String>,
 
     /// Show the current Nepali date (BS)
-    #[arg(short, long)]
+    #[arg(short = 'n', long)]
     today_nepali: bool,
-    ///// Show the current English date (AD)
-    //#[arg(short, long)]
-    //today_english: bool,
+
+    /// Show the current English date (AD)
+    #[arg(short = 'e', long)]
+    today_english: bool,
+
+    #[command(subcommand)]
+    command: Option<Commands>,
+}
+
+#[derive(Subcommand, Debug)]
+enum Commands {
+    English {
+        /// Displays the current Gregorian date
+        #[arg(short, long)]
+        today: bool,
+
+        /// Date will be displayed in this format. It must be compatible with
+        /// chrono format for Rust. If no format is specified then default
+        /// format will be used.
+        /// Default format: m/d/Y -> 5/10/2025
+        #[arg(long)]
+        format: Option<String>,
+    },
+    Nepali {
+        #[arg(long)]
+        format: String,
+    },
 }
 
 fn _prev_main() {
@@ -101,26 +128,17 @@ fn _prev_main() {
     }
 }
 
-mod nepali_calendar {
-    pub fn human_month(m: i32) -> &'static str {
-        match m {
-            1 => "Baisakh",
-            2 => "Jestha",
-            3 => "Ashad",
-            _ => "Unknown",
-        }
-    }
-}
-
 fn main() {
     let conv = Conv::parse();
 
-    if conv.today_nepali {
-        let now_date = Local::now();
-        let year = now_date.year();
-        let month = now_date.month();
-        let day = now_date.day();
+    println!("{:#?}", conv.command.unwrap());
 
+    let now_date = Local::now();
+    let year = now_date.year();
+    let month = now_date.month();
+    let day = now_date.day();
+
+    if conv.today_nepali {
         let mut bsdate = Bikram::new();
         bsdate.from_gregorian(year, month as i32, day as i32);
 
@@ -130,5 +148,9 @@ fn main() {
             nepali_calendar::human_month(bsdate.get_month()),
             bsdate.get_year(),
         );
+    }
+
+    if conv.today_english {
+        println!("{}/{}/{} (m/d/Y)", month, day, year);
     }
 }
