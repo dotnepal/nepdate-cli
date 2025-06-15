@@ -5,25 +5,22 @@ name: Rust Build
 on:
   push:
     branches:
+      - 'feature/*'
       - rust
-  pull_request:
-    branches:
-      - rust
+
+env:
+    CARGO_TERM_COLOR: always
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+    build:
+        runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+        steps:
+          - name: Checkout
+            uses: actions/checkout@v4
 
-      - name: Set up Rust
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
+          - name: Rust Cache
+            uses: Swatinem/rust-cache@v2
 
-      - name: Run build script
-        run: |
-          chmod +x build.sh
-          ./build.sh
+          - name: Build
+            run: cargo build --verbose
