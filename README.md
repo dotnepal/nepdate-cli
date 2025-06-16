@@ -1,5 +1,7 @@
 # nepdate-cli
 
+![Screenshot](./screenshot.png)
+
 `nepdate-cli` is a simple command-line program built using the `bikram` library to convert dates between Bikram Sambat (Nepali calendar) and Gregorian dates.
 
 ## Installation and Setup
