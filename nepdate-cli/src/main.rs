@@ -131,8 +131,6 @@ fn _prev_main() {
 fn main() {
     let conv = Conv::parse();
 
-    println!("{:#?}", conv.command.unwrap());
-
     let now_date = Local::now();
     let year = now_date.year();
     let month = now_date.month();

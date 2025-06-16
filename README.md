@@ -2,11 +2,6 @@
 
 `nepdate-cli` is a simple command-line program built using the `bikram` library to convert dates between Bikram Sambat (Nepali calendar) and Gregorian dates.
 
-## Features
-
-- Convert Gregorian dates to Bikram Sambat.
-- Convert Bikram Sambat dates to Gregorian.
-
 ## Installation and Setup
 
 ### Prerequisites
@@ -19,75 +14,35 @@
 First, clone the repository:
 
 ```bash
-git clone --branch rust https://github.com/khumnath/nepdate-cli.git
+git clone https://github.com/dotnepal/nepdate-cli
 cd nepdate-cli
 ```
 
 ### Build the Program
-
-1. Make sure to give execution permissions to the `build.sh` script:
-    ```bash
-    chmod +x build.sh
-    ```
-
-2. Run the `build.sh` script to build the program and set up the build folder:
-    ```bash
-    ./build.sh
-    ```
+- Run `cargo build --release`
 
 This script will:
 - Compile the program in release mode and store the output in the `target` directory.
 - Display the path to the executable.
 - Test the program by running it.
 
-The executable path should be printed in the terminal, and after 2 seconds, the program will be test run automatically.
-
 ## Install using cargo 
 
 ```cargo install nepdate-cli ```
 Running the above command will globally install the nepdate-cli binary.
 
-## using library in other applications
-Run the following Cargo command in your project directory:
-
-```cargo add nepdate-cli```
-
-Or add the following line to your Cargo.toml:
-
-``` nepdate-cli = "0.1.3" ```
-nepdate-test-app folder has example of an application. ```use bikram::bikram::Bikram;``` should import bikram library after adding nepdate-cli dependency in application.
-
 ## Usage
 
-After building the program, you can use it to convert dates between the two calendar systems.
+Get Todya Nepali date
+- `nepdate-cli --today-nepali`
 
-### Convert to Nepali Date (Bikram Sambat):
+OUTPUT: `2 Ashad, 2082`
 
-```
-./target/release/nepdate-cli --conv --tobs <year> <month> <day>
-```
+Get Today English date
+- `nepdate-cli --today-english`
 
-Example:
-```
-./target/release/nepdate-cli --conv --tobs 2024 10 18
-```
-
-### Convert to Gregorian Date:
-
-```
-./target/release/nepdate-cli --conv --toad <year> <month> <day>
-```
-
-Example:
-```
-./target/release/nepdate-cli --conv --toad 2081 6 1
-```
-
+OUTPUT: `6/16/2025 (m/d/Y)`
 
 ### License
 
 nepdate-cli is released under the [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.en.html). See the LICENSE file for more details.
-
-### Contact
-
-For any inquiries, you can reach out to [khumnath](https://khumnath.com.np) cg.
